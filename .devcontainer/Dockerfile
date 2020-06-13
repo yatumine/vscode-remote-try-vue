@@ -3,7 +3,7 @@
 # Licensed under the MIT License. See LICENSE in the project root for license information.
 #-----------------------------------------------------------------------------------------
 
-FROM node:12
+FROM node:14
 
 # Configure apt
 ENV DEBIAN_FRONTEND=noninteractive
@@ -30,7 +30,8 @@ RUN rm -rf /opt/yarn-* /usr/local/bin/{yarn,yarnpkg} \
     && curl -sS https://dl.yarnpkg.com/$(lsb_release -is | tr '[:upper:]' '[:lower:]')/pubkey.gpg | apt-key add - 2>/dev/null \
     && echo "deb https://dl.yarnpkg.com/$(lsb_release -is | tr '[:upper:]' '[:lower:]')/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update \
-    && apt-get -y install --no-install-recommends yarn
+    && apt-get -y install --no-install-recommends yarn \
+    && yarn global add @vue/cli
 
 # Copy default endpoint specific user settings overrides into container to specify Formatter
 COPY --chown=node:node settings.vscode.json $HOME/.vscode-remote/data/Machine/settings.json
